@@ -1,5 +1,5 @@
 export const fetchData = async (): Promise<Holiday[]> => {
-  const response = await fetch("/src/data/holidays.json");
+  const response = await fetch("/data/holidays.json");
   const data = (await response.json()) as {nombre: string; fecha: string}[];
 
   const formatData = data.map((holiday) => {
