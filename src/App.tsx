@@ -20,29 +20,32 @@ function App() {
 
   return (
     <main className="h-screen font-mono px-6">
-      {loading && (
+      {loading ? (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
           <p className="text-4xl text-white">Cargando...</p>
         </div>
+      ) : (
+        <div>
+          <header className="flex flex-col justify-center gap-4 text-center h-full md:h-96">
+            <h1 className="text-9xl text-yellow-400">{diasFaltantes(nearestHoliday.fecha)}</h1>
+            <p className="text-xl">
+              dias hasta {nearestHoliday.nombre}{" "}
+              {+diasFaltantes(nearestHoliday.fecha) > 15 ? "😩" : "😬"}
+            </p>
+            <p className="md:hidden absolute right-[46%] bottom-10 text-5xl">↓</p>
+          </header>
+          <footer className="w-fit mx-auto pb-4">
+            <h4 className="font-bold text-xl mb-4">Proximos feriados: </h4>
+            <ul className="flex flex-col md:grid md:grid-cols-3 gap-3">
+              {nextHolidays.map((holiday) => {
+                return (
+                  <HolidayCard key={holiday.nombre} fecha={holiday.fecha} nombre={holiday.nombre} />
+                );
+              })}
+            </ul>
+          </footer>
+        </div>
       )}
-      <header className="flex flex-col justify-center gap-4 text-center h-full md:h-96">
-        <h1 className="text-9xl text-yellow-400">{diasFaltantes(nearestHoliday.fecha)}</h1>
-        <p className="text-xl">
-          dias hasta {nearestHoliday.nombre}{" "}
-          {+diasFaltantes(nearestHoliday.fecha) > 15 ? "😩" : "😬"}
-        </p>
-        <p className="md:hidden absolute right-[46%] bottom-10 text-5xl">↓</p>
-      </header>
-      <footer className="w-fit mx-auto pb-4">
-        <h4 className="font-bold text-xl mb-4">Proximos feriados: </h4>
-        <ul className="flex flex-col md:grid md:grid-cols-3 gap-3">
-          {nextHolidays.map((holiday) => {
-            return (
-              <HolidayCard key={holiday.nombre} fecha={holiday.fecha} nombre={holiday.nombre} />
-            );
-          })}
-        </ul>
-      </footer>
     </main>
   );
 }
