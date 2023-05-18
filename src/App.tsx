@@ -26,20 +26,26 @@ function App() {
         </div>
       ) : (
         <div>
-          <header className="flex flex-col justify-center gap-4 text-center h-full md:h-96">
+          <header className="flex flex-col justify-center gap-4 text-center h-full md:h-96 py-14">
             <h1 className="text-9xl text-yellow-400">{diasFaltantes(nearestHoliday.fecha)}</h1>
             <p className="text-xl">
               dias hasta {nearestHoliday.nombre}{" "}
-              {+diasFaltantes(nearestHoliday.fecha) > 15 ? "😩" : "😬"}
+              {+diasFaltantes(nearestHoliday.fecha) > 15 ? "😩" : "😎"}
             </p>
-            <p className="md:hidden absolute right-[46%] bottom-10 text-5xl">↓</p>
+            <span className="inline-block underline underline-offset-4">
+              Fecha: {nearestHoliday.fecha?.toLocaleDateString()}
+            </span>
           </header>
           <footer className="w-fit mx-auto pb-4">
             <h4 className="font-bold text-xl mb-4">Proximos feriados: </h4>
             <ul className="flex flex-col md:grid md:grid-cols-3 gap-3">
               {nextHolidays.map((holiday) => {
                 return (
-                  <HolidayCard key={holiday.nombre} fecha={holiday.fecha} nombre={holiday.nombre} />
+                  <HolidayCard
+                    key={String(holiday.fecha)}
+                    fecha={holiday.fecha}
+                    nombre={holiday.nombre}
+                  />
                 );
               })}
             </ul>
@@ -52,16 +58,16 @@ function App() {
 
 export default App;
 
-const HolidayCard = (holiday: Holiday) => {
+const HolidayCard = ({fecha, nombre}: {fecha: Holiday["fecha"]; nombre: Holiday["nombre"]}) => {
   return (
     <li className="flex flex-col bg-yellow-50 px-4 py-2 max-w-sm w-full min-h-[88px] rounded-lg text-black">
       <p className="font-bold flex justify-between">
-        {holiday.fecha.toLocaleDateString()}
+        {fecha.toLocaleDateString()}
         <span className="text-right font-normal text-sm ml-2">
-          {diasFaltantes(holiday.fecha)} dias restantes
+          {diasFaltantes(fecha)} dias restantes
         </span>
       </p>
-      <p className="font-mono">{holiday.nombre}.</p>
+      <p className="font-mono">{nombre}.</p>
     </li>
   );
 };
