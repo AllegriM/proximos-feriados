@@ -15,6 +15,7 @@ function App() {
       holidays[0]?.fecha.getDay() + 1,
     ),
   };
+  const daysNearestHoliday = diasFaltantes(nearestHoliday.fecha);
 
   const nextHolidays = holidays.filter((holiday) => holiday.fecha > today && holiday).slice(1);
 
@@ -27,10 +28,9 @@ function App() {
       ) : (
         <div>
           <header className="flex flex-col justify-center gap-4 text-center h-full md:h-96 py-14">
-            <h1 className="text-9xl text-yellow-400">{diasFaltantes(nearestHoliday.fecha)}</h1>
+            <h1 className="text-9xl text-yellow-400">{daysNearestHoliday}</h1>
             <p className="text-xl">
-              dias hasta {nearestHoliday.nombre}{" "}
-              {+diasFaltantes(nearestHoliday.fecha) > 15 ? "😩" : "😎"}
+              dias hasta {nearestHoliday.nombre} {+daysNearestHoliday > 15 ? "😩" : "😎"}
             </p>
             <span className="inline-block underline underline-offset-4">
               Fecha: {nearestHoliday.fecha?.toLocaleDateString()}
@@ -40,11 +40,14 @@ function App() {
             <h4 className="font-bold text-xl mb-4">Proximos feriados: </h4>
             <ul className="flex flex-col md:grid md:grid-cols-3 gap-3">
               {nextHolidays.map((holiday) => {
+                console.log(holiday);
+
                 return (
                   <HolidayCard
                     key={String(holiday.fecha)}
                     fecha={holiday.fecha}
                     nombre={holiday.nombre}
+                    tipo={holiday.tipo}
                   />
                 );
               })}
@@ -58,11 +61,30 @@ function App() {
 
 export default App;
 
-const HolidayCard = ({fecha, nombre}: {fecha: Holiday["fecha"]; nombre: Holiday["nombre"]}) => {
+const HolidayCard = ({
+  fecha,
+  nombre,
+  tipo,
+}: {
+  fecha: Holiday["fecha"];
+  nombre: Holiday["nombre"];
+  tipo: Holiday["tipo"];
+}) => {
   return (
     <li className="flex flex-col bg-yellow-50 px-4 py-2 max-w-sm w-full min-h-[88px] rounded-lg text-black">
       <p className="font-bold flex justify-between">
         {fecha.toLocaleDateString()}
+        <span
+          className={`rounded-lg text-sm px-1 ml-2 mr-auto ${
+            tipo === "puente"
+              ? "bg-green-300"
+              : tipo === "inamovible"
+              ? "bg-red-200"
+              : "bg-yellow-200"
+          }`}
+        >
+          {tipo}
+        </span>
         <span className="text-right font-normal text-sm ml-2">
           {diasFaltantes(fecha)} dias restantes
         </span>
