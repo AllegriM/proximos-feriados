@@ -40,8 +40,6 @@ function App() {
             <h4 className="font-bold text-xl mb-4">Proximos feriados: </h4>
             <ul className="flex flex-col md:grid md:grid-cols-3 gap-3">
               {nextHolidays.map((holiday) => {
-                console.log(holiday);
-
                 return (
                   <HolidayCard
                     key={String(holiday.fecha)}
