@@ -1,3 +1,4 @@
+import {HolidayCard} from "./components/HolidayCard";
 import useHolidays from "./hooks/useHolidays";
 import {diasFaltantes} from "./utils/remainDays";
 
@@ -30,7 +31,7 @@ function App() {
           <header className="flex flex-col justify-center gap-4 text-center h-full md:h-96 py-14">
             <h1 className="text-9xl text-yellow-400">{daysNearestHoliday}</h1>
             <p className="text-xl">
-              dias hasta {nearestHoliday.nombre} {+daysNearestHoliday > 15 ? "😩" : "😎"}
+              dias hasta {nearestHoliday.nombre} {daysNearestHoliday > 15 ? "😩" : "😎"}
             </p>
             <span className="inline-block underline underline-offset-4">
               Fecha: {nearestHoliday.fecha?.toLocaleDateString()}
@@ -58,36 +59,3 @@ function App() {
 }
 
 export default App;
-
-const HolidayCard = ({
-  fecha,
-  nombre,
-  tipo,
-}: {
-  fecha: Holiday["fecha"];
-  nombre: Holiday["nombre"];
-  tipo: Holiday["tipo"];
-}) => {
-  return (
-    <li className="flex flex-col bg-yellow-50 px-4 py-2 max-w-sm w-full min-h-[88px] rounded-lg text-black">
-      <p className="font-bold flex justify-between">
-        {fecha.toLocaleDateString()}
-        <span
-          className={`rounded-lg text-sm px-1 ml-2 mr-auto ${
-            tipo === "puente"
-              ? "bg-green-300"
-              : tipo === "inamovible"
-              ? "bg-red-200"
-              : "bg-yellow-200"
-          }`}
-        >
-          {tipo}
-        </span>
-        <span className="text-right font-normal text-sm ml-2">
-          {diasFaltantes(fecha)} dias restantes
-        </span>
-      </p>
-      <p className="font-mono">{nombre}.</p>
-    </li>
-  );
-};
